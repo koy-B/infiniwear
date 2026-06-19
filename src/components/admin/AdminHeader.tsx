@@ -53,7 +53,7 @@ export default function AdminHeader({ user, onMenuToggle }: Props) {
       {onMenuToggle && (
         <button
           onClick={onMenuToggle}
-          className="lg:hidden"
+          className="lg:hidden admin-hamburger"
           title="Ouvrir le menu"
           style={{
             background: "none",

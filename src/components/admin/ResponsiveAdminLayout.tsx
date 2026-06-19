@@ -2,16 +2,18 @@
 // src/components/admin/ResponsiveAdminLayout.tsx
 // Composant Client pour gérer la navigation responsive et le tiroir mobile (drawer)
 
-import { useState, useEffect, cloneElement, isValidElement } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import AdminSidebar from "./AdminSidebar";
+import AdminHeader from "./AdminHeader";
+import type { Session } from "next-auth";
 
 interface Props {
-  sidebar: React.ReactNode;
-  header: React.ReactNode;
+  user: Session["user"];
   children: React.ReactNode;
 }
 
-export default function ResponsiveAdminLayout({ sidebar, header, children }: Props) {
+export default function ResponsiveAdminLayout({ user, children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
 
@@ -19,13 +21,6 @@ export default function ResponsiveAdminLayout({ sidebar, header, children }: Pro
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname]);
-
-  // Injecter onMenuToggle dans le composant header
-  const headerWithToggle = isValidElement(header)
-    ? cloneElement(header as React.ReactElement<any>, {
-        onMenuToggle: () => setSidebarOpen((prev) => !prev),
-      })
-    : header;
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg-base)" }}>
@@ -60,7 +55,7 @@ export default function ResponsiveAdminLayout({ sidebar, header, children }: Pro
           </button>
         )}
 
-        {sidebar}
+        <AdminSidebar user={user} />
       </div>
 
       {/* ── Backdrop mobile ── */}
@@ -83,8 +78,8 @@ export default function ResponsiveAdminLayout({ sidebar, header, children }: Pro
 
       {/* ── Zone de Contenu Principal ── */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, overflow: "hidden" }}>
-        {/* Header avec hamburger intégré dans son flux flex */}
-        {headerWithToggle}
+        {/* Header avec hamburger intégré */}
+        <AdminHeader user={user} onMenuToggle={() => setSidebarOpen((prev) => !prev)} />
 
         {/* Corps de la page */}
         <main style={{ flex: 1, overflowY: "auto" }}>

@@ -31,10 +31,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <ResponsiveAdminLayout
-      sidebar={<AdminSidebar user={session.user} />}
-      header={<AdminHeader user={session.user} />}
-    >
+    <ResponsiveAdminLayout user={session.user}>
       {children}
     </ResponsiveAdminLayout>
   );
