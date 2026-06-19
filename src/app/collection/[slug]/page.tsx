@@ -213,7 +213,7 @@ export default async function CollectionPage({ params }: Props) {
               gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
               gap: "24px"
             }}>
-              {collection.products.map((product) => (
+              {collection.products.map((product: any) => (
                 <Link
                   key={product.id}
                   href={`/produit/${product.slug}`}
