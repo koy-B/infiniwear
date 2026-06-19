@@ -46,14 +46,14 @@ export default async function MarketplacePage({
   // Collection
   if (params.collection) {
     filtered = filtered.filter(
-      (p) => p.collection?.slug === params.collection
+      (p: any) => p.collection?.slug === params.collection
     );
   }
 
   // Category
   if (params.category) {
     filtered = filtered.filter(
-      (p) => p.category?.slug === params.category
+      (p: any) => p.category?.slug === params.category
     );
   }
 
@@ -61,7 +61,7 @@ export default async function MarketplacePage({
   if (params.priceMax) {
     const max = parseInt(params.priceMax, 10);
     if (!isNaN(max)) {
-      filtered = filtered.filter((p) => p.price <= max);
+      filtered = filtered.filter((p: any) => p.price <= max);
     }
   }
 
@@ -69,7 +69,7 @@ export default async function MarketplacePage({
   if (params.search) {
     const q = params.search.toLowerCase();
     filtered = filtered.filter(
-      (p) =>
+      (p: any) =>
         p.name.toLowerCase().includes(q) ||
         (p.description && p.description.toLowerCase().includes(q))
     );
@@ -77,15 +77,15 @@ export default async function MarketplacePage({
 
   // Sort
   if (params.sort === "price_asc") {
-    filtered.sort((a, b) => a.price - b.price);
+    filtered.sort((a: any, b: any) => a.price - b.price);
   } else if (params.sort === "price_desc") {
-    filtered.sort((a, b) => b.price - a.price);
+    filtered.sort((a: any, b: any) => b.price - a.price);
   }
 
   // Gather categories for filter list
   const categories = Array.from(
     new Map(
-      dbProducts.map((p) => [p.category?.slug || "", p.category?.name || ""])
+      dbProducts.map((p: any) => [p.category?.slug || "", p.category?.name || ""])
     ).entries()
   ).filter(([slug]) => slug !== "");
 
@@ -352,7 +352,7 @@ export default async function MarketplacePage({
                 gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
                 gap: "24px"
               }}>
-                {filtered.map((product) => (
+                {filtered.map((product: any) => (
                   <Link
                     key={product.id}
                     href={`/produit/${product.slug}`}
