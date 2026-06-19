@@ -84,10 +84,10 @@ export default async function MarketplacePage({
 
   // Gather categories for filter list
   const categories = Array.from(
-    new Map(
+    new Map<string, string>(
       dbProducts.map((p: any) => [p.category?.slug || "", p.category?.name || ""])
     ).entries()
-  ).filter(([slug]) => slug !== "");
+  ).filter(([slug]: any) => slug !== "");
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-base)", color: "var(--text-primary)" }}>
@@ -248,7 +248,7 @@ export default async function MarketplacePage({
                   >
                     Toutes
                   </Link>
-                  {categories.map(([slug, name]) => (
+                  {categories.map(([slug, name]: any) => (
                     <Link
                       key={slug}
                       href={{ query: { ...params, category: slug } }}
