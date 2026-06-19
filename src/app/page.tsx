@@ -217,7 +217,7 @@ export default async function HomePage() {
           gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
           gap: "24px"
         }}>
-          {featuredProducts.map((product) => (
+          {featuredProducts.map((product: any) => (
             <Link
               key={product.id}
               href={`/produit/${product.slug}`}
@@ -375,7 +375,7 @@ export default async function HomePage() {
       {/* ─── TWO COLLECTIONS BANNER ─── */}
       <section style={{ padding: "120px 24px", maxWidth: "1440px", margin: "0 auto" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "24px" }} className="md:grid-cols-2">
-          {collections.slice(0, 2).map((col) => {
+          {collections.slice(0, 2).map((col: any) => {
             const isFeminine = col.slug === "feminine";
             const cover = isFeminine 
               ? "/images/feminine/IMG_3413.JPG.jpeg" 
