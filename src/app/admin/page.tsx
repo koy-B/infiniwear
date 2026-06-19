@@ -149,7 +149,7 @@ export default async function AdminDashboard() {
               Aucune commande pour le moment
             </div>
           ) : (
-            recentOrders.map((order) => {
+            recentOrders.map((order: any) => {
               const st = statusStyle[order.status] || statusStyle.PENDING;
               const firstItem = order.items[0]?.product?.name || "Produit";
               return (
@@ -208,7 +208,7 @@ export default async function AdminDashboard() {
               </div>
               <Link href="/admin/logs" style={{ fontSize: "11px", textTransform: "uppercase", color: "#ffffff", textDecoration: "none", borderBottom: "1px solid rgba(255,255,255,0.2)" }}>Logs</Link>
             </div>
-            {recentLogs.map((log) => (
+            {recentLogs.map((log: any) => (
               <div key={log.id} style={{ padding: "10px 24px", borderBottom: "1px solid var(--border-subtle)", display: "flex", gap: "8px", alignItems: "baseline" }}>
                 <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 5px", color: logTypeColor[log.type] || "#9ca3af", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", flexShrink: 0 }}>
                   {log.type}
@@ -242,7 +242,7 @@ export default async function AdminDashboard() {
             <Link href="/admin/produits" style={{ fontSize: "11px", textTransform: "uppercase", color: "#ffffff", textDecoration: "none", borderBottom: "1px solid rgba(255,255,255,0.2)" }}>Gérer</Link>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "1px", background: "var(--border-subtle)" }}>
-            {lowStock.map((p) => {
+            {lowStock.map((p: any) => {
               const pct = Math.min((p.stock / 40) * 100, 100);
               const color = p.stock <= 5 ? "#fb7185" : "#fbbf24";
               return (
