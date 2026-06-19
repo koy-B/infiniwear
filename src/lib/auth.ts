@@ -7,7 +7,9 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
-import type { Role } from "@prisma/client";
+
+// Local Role type — mirrors the Prisma enum to avoid import issues during Vercel build
+type Role = "SUPER_ADMIN" | "SUPPORT_AGENT" | "CLIENT";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
