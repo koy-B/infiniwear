@@ -46,7 +46,7 @@ export default async function ProductsAdminPage() {
   const products = await getProducts();
 
   return (
-    <div style={{ padding: "32px" }} className="animate-fade-up">
+    <div style={{ padding: "var(--admin-page-padding)" }} className="animate-fade-up">
       {/* Header */}
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "28px" }}>
         <div>
@@ -69,7 +69,8 @@ export default async function ProductsAdminPage() {
 
       {/* Products Table */}
       <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)", overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
+        <div className="admin-table-container">
+<table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid var(--border-subtle)", background: "rgba(255,255,255,0.02)" }}>
               <th style={{ padding: "16px 24px", fontWeight: 600, color: "var(--text-muted)", fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" }}>Visuel</th>
@@ -160,6 +161,7 @@ export default async function ProductsAdminPage() {
             })}
           </tbody>
         </table>
+</div>
       </div>
     </div>
   );

@@ -80,10 +80,10 @@ export default async function AdminDashboard() {
   const { rev, revDelta, ordersMonth, ordersDelta, usersTotal, pendingOrders, activeProducts, recentOrders, lowStock, recentLogs } = await getStats();
 
   return (
-    <div style={{ padding: "32px" }} className="animate-fade-up">
+    <div style={{ padding: "var(--admin-page-padding)" }} className="animate-fade-up">
 
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "28px" }}>
+      <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-7 gap-4">
         <div>
           <div style={{ fontSize: "11px", letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 600, color: "var(--text-primary)", marginBottom: "4px" }}>
             VUE D'ENSEMBLE
@@ -104,7 +104,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px", marginBottom: "28px" }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
         {[
           { label: "Revenus (FCFA)", value: formatPrice(rev), delta: `${revDelta > 0 ? "+" : ""}${revDelta}%`, up: revDelta >= 0 },
           { label: "Commandes", value: ordersMonth.toString(), delta: `${ordersDelta > 0 ? "+" : ""}${ordersDelta} ce mois`, up: ordersDelta >= 0 },
@@ -126,7 +126,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Content Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "20px", marginBottom: "20px" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-5 mb-5">
 
         {/* Recent Orders */}
         <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)" }}>

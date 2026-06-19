@@ -74,7 +74,7 @@ export default async function UsersAdminPage() {
   const users = await getUsers();
 
   return (
-    <div style={{ padding: "32px" }} className="animate-fade-up">
+    <div style={{ padding: "var(--admin-page-padding)" }} className="animate-fade-up">
       {/* Header */}
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "28px" }}>
         <div>

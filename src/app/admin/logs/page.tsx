@@ -84,7 +84,7 @@ export default async function LogsAdminPage() {
   const logs = await getLogs();
 
   return (
-    <div style={{ padding: "32px" }} className="animate-fade-up">
+    <div style={{ padding: "var(--admin-page-padding)" }} className="animate-fade-up">
       {/* Header */}
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "28px" }}>
         <div>

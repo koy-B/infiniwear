@@ -66,7 +66,7 @@ export default async function EditCollectionPage({
   }
 
   return (
-    <div style={{ padding: "32px", maxWidth: "1000px" }} className="animate-fade-up">
+    <div style={{ padding: "var(--admin-page-padding)", maxWidth: "1000px" }} className="animate-fade-up">
       {/* Header */}
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "28px", borderBottom: "1px solid var(--border-subtle)", paddingBottom: "20px" }}>
         <div>
@@ -85,7 +85,7 @@ export default async function EditCollectionPage({
       </div>
 
       {/* Form Card */}
-      <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)", padding: "32px" }}>
+      <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)", padding: "var(--admin-page-padding)" }}>
         <EditCollectionForm collection={collection} />
       </div>
     </div>
