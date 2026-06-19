@@ -11,8 +11,42 @@ import { db } from "@/lib/db";
 // Local Role type — mirrors the Prisma enum to avoid import issues during Vercel build
 type Role = "SUPER_ADMIN" | "SUPPORT_AGENT" | "CLIENT";
 
+// Génère un pseudo unique à partir du nom/email Google
+async function generateUniquePseudo(nameOrEmail: string): Promise<string> {
+  const base = nameOrEmail
+    .split("@")[0]
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // retirer les accents
+    .replace(/[^a-z0-9]/g, "")       // garder seulement alphanumériques
+    .slice(0, 12) || "user";
+
+  // Essayer d'abord sans suffixe, puis avec suffixe aléatoire
+  for (let i = 0; i < 10; i++) {
+    const pseudo = i === 0 ? base : `${base}${Math.floor(1000 + Math.random() * 9000)}`;
+    const taken = await db.user.findUnique({ where: { pseudo } });
+    if (!taken) return pseudo;
+  }
+  // Fallback garanti unique
+  return `${base}${Date.now().toString(36)}`;
+}
+
+// Custom Prisma adapter — surcharge createUser pour injecter le pseudo (champ requis)
+const customPrismaAdapter = {
+  ...PrismaAdapter(db),
+  createUser: async (data: any) => {
+    const pseudo = await generateUniquePseudo(data.name || data.email);
+    return await db.user.create({
+      data: {
+        ...data,
+        pseudo,
+      },
+    });
+  },
+};
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(db),
+  adapter: customPrismaAdapter,
   session: { strategy: "jwt" },
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "change-moi-avec-openssl-rand-base64-32",
   pages: {
