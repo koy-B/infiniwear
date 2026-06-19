@@ -89,14 +89,14 @@ export async function GET() {
       : 0;
 
     // Top products avec noms
-    const topProductIds = topProducts.map((p) => p.productId);
+    const topProductIds = topProducts.map((p: any) => p.productId);
     const topProductDetails = await db.product.findMany({
       where:   { id: { in: topProductIds } },
       include: { collection: { select: { name: true } } },
     });
-    const topProductsWithDetails = topProducts.map((p) => ({
+    const topProductsWithDetails = topProducts.map((p: any) => ({
       ...p,
-      product: topProductDetails.find((d) => d.id === p.productId),
+      product: topProductDetails.find((d: any) => d.id === p.productId),
     }));
 
     return NextResponse.json({
