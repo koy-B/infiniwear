@@ -13,7 +13,7 @@ async function getUsers() {
       orderBy: { createdAt: "desc" },
     });
     // Serialize Dates to ISO strings to avoid hydration issues
-    return users.map(u => ({
+    return users.map((u: any) => ({
       ...u,
       createdAt: u.createdAt.toISOString(),
     }));

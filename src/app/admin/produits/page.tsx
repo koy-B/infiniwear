@@ -18,7 +18,7 @@ async function getProducts() {
   } catch (error) {
     console.warn("Database failed to load products in admin, using mockProducts fallback:", error);
     // Transform mockProducts to conform to Prisma shape for rendering
-    return mockProducts.map(p => ({
+    return mockProducts.map((p: any) => ({
       id: p.id,
       name: p.name,
       slug: p.slug,
@@ -82,7 +82,7 @@ export default async function ProductsAdminPage() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => {
+            {products.map((product: any) => {
               const isLowStock = product.stock <= 10;
               return (
                 <tr key={product.id} style={{ borderBottom: "1px solid var(--border-subtle)", transition: "background 0.2s" }} className="hover:bg-white/[0.02]">

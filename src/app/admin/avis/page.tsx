@@ -17,7 +17,7 @@ async function getReviews() {
       }
     });
     // Serialize Dates to ISO strings
-    return reviews.map((r) => ({
+    return reviews.map((r: any) => ({
       ...r,
       createdAt: r.createdAt.toISOString(),
     }));

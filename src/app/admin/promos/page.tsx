@@ -13,7 +13,7 @@ async function getPromoCodes() {
       orderBy: { createdAt: "desc" },
     });
     // Serialize Dates to ISO strings to avoid Next.js warnings/hydration issues
-    return promoCodes.map(p => ({
+    return promoCodes.map((p: any) => ({
       ...p,
       expiresAt: p.expiresAt ? p.expiresAt.toISOString() : null,
       createdAt: p.createdAt.toISOString(),
