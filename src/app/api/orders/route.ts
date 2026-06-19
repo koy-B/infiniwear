@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
     const { items, notes } = parsed.data;
 
     // Récupérer les produits et vérifier le stock
-    const productIds = items.map((i) => i.productId);
+    const productIds = items.map((i: any) => i.productId);
     const products = await db.product.findMany({
       where: { id: { in: productIds }, active: true },
     });
@@ -88,8 +88,8 @@ export async function POST(req: NextRequest) {
 
     // Calculer le total
     let total = 0;
-    const orderItems = items.map((item) => {
-      const product = products.find((p) => p.id === item.productId)!;
+    const orderItems = items.map((item: any) => {
+      const product = products.find((p: any) => p.id === item.productId)!;
       if (!product.sizes.includes(item.size)) {
         throw new Error(`Taille ${item.size} indisponible pour ${product.name}`);
       }
@@ -114,8 +114,8 @@ export async function POST(req: NextRequest) {
     const waMessage = generateWhatsAppMessage({
       pseudo:  user?.pseudo || session.user.name || "Client",
       orderId,
-      items: items.map((item) => {
-        const product = products.find((p) => p.id === item.productId)!;
+      items: items.map((item: any) => {
+        const product = products.find((p: any) => p.id === item.productId)!;
         return { name: product.name, size: item.size, quantity: item.quantity };
       }),
       total,
