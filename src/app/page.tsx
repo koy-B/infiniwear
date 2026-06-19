@@ -224,17 +224,13 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          gap: "24px"
-        }}>
+        <div className="mobile-scroll-container">
           {featuredProducts.map((product: any) => (
             <Link
               key={product.id}
               href={`/produit/${product.slug}`}
               style={{ textDecoration: "none", color: "inherit" }}
-              className="group"
+              className="group mobile-scroll-item"
             >
               <div style={{
                 background: "var(--bg-card)",

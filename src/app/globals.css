@@ -287,3 +287,46 @@ h1, h2, h3 { font-family: var(--font-display); }
     display: none !important;
   }
 }
+
+/* ─── Horizontal Scroll Container (Mobile) ──────────────── */
+.mobile-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  gap: 16px;
+  margin: 0 -20px;
+  padding: 0 20px 16px;
+}
+
+.mobile-scroll-container::-webkit-scrollbar {
+  display: none; /* Safari/Chrome */
+}
+
+.mobile-scroll-item {
+  display: block;
+  flex: 0 0 78vw;
+  max-width: 320px;
+  scroll-snap-align: start;
+}
+
+/* Desktop override */
+@media (min-width: 768px) {
+  .mobile-scroll-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+  .mobile-scroll-item {
+    flex: unset;
+    max-width: unset;
+    scroll-snap-align: unset;
+  }
+}
+
