@@ -212,6 +212,39 @@ h1, h2, h3 { font-family: var(--font-display); }
   transform: scale(1.06);
 }
 
+/* ─── Section Padding Responsive ────────────────────────── */
+.section-padding {
+  padding: 80px 20px 60px;
+}
+@media (min-width: 768px) {
+  .section-padding {
+    padding: 120px 24px 80px;
+  }
+}
+
+/* ─── Navbar Responsive ─────────────────────────────────── */
+/* Desktop : afficher les liens, cacher hamburger */
+@media (min-width: 768px) {
+  .navbar-desktop-links {
+    display: flex !important;
+  }
+  .navbar-hamburger {
+    display: none !important;
+  }
+  .navbar-mobile-menu {
+    display: none !important;
+  }
+}
+/* Mobile : cacher liens desktop, afficher hamburger */
+@media (max-width: 767px) {
+  .navbar-desktop-links {
+    display: none !important;
+  }
+  .navbar-hamburger {
+    display: flex !important;
+  }
+}
+
 /* ─── Admin Layout Responsive ────────────────────────────── */
 /* Sidebar wrapper — mobile : masquée par défaut, slide-in quand .open */
 .admin-sidebar-wrapper {

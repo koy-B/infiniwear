@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { formatPrice } from "@/lib/utils";
 import Navbar from "@/components/layout/Navbar";
 import { mockProducts } from "@/lib/mockProducts";
+import { unstable_cache } from "next/cache";
 import fs from "fs";
 import path from "path";
 
@@ -35,31 +36,40 @@ export const metadata: Metadata = {
   description: "Marque de streetwear haut de gamme et luxe minimaliste. Collections Normale & Féminine. No Limit Just Style.",
 };
 
-async function getFeaturedProducts() {
-  try {
-    const products = await db.product.findMany({
-      where: { active: true, featured: true },
-      include: { collection: true },
-      take: 4,
-      orderBy: { createdAt: "desc" },
-    });
-    return products;
-  } catch {
-    console.warn("Database failed to load featured products, using mock fallback.");
-    return mockProducts.filter((p) => p.featured).slice(0, 4);
-  }
-}
+// Cache 5 minutes pour les produits et collections
+const getFeaturedProducts = unstable_cache(
+  async () => {
+    try {
+      const products = await db.product.findMany({
+        where: { active: true, featured: true },
+        include: { collection: true },
+        take: 4,
+        orderBy: { createdAt: "desc" },
+      });
+      return products;
+    } catch {
+      console.warn("Database failed to load featured products, using mock fallback.");
+      return mockProducts.filter((p) => p.featured).slice(0, 4);
+    }
+  },
+  ["featured-products"],
+  { revalidate: 300 }
+);
 
-async function getCollections() {
-  try {
-    return await db.collection.findMany({ where: { active: true }, orderBy: { name: "asc" } });
-  } catch {
-    return [
-      { id: "col-normale", name: "Collection Normale", slug: "normale", description: "Streetwear & essentiels" },
-      { id: "col-feminine", name: "Collection Féminine", slug: "feminine", description: "Lignes fluides & crops" },
-    ];
-  }
-}
+const getCollections = unstable_cache(
+  async () => {
+    try {
+      return await db.collection.findMany({ where: { active: true }, orderBy: { name: "asc" } });
+    } catch {
+      return [
+        { id: "col-normale", name: "Collection Normale", slug: "normale", description: "Streetwear & essentiels" },
+        { id: "col-feminine", name: "Collection Féminine", slug: "feminine", description: "Lignes fluides & crops" },
+      ];
+    }
+  },
+  ["collections-active"],
+  { revalidate: 300 }
+);
 
 export default async function HomePage() {
   const [featuredProducts, collections, homeConfig] = await Promise.all([
@@ -121,12 +131,14 @@ export default async function HomePage() {
             </p>
             <h1 style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(48px, 9vw, 96px)",
+              fontSize: "clamp(36px, 10vw, 96px)",
               fontWeight: 900,
               lineHeight: 0.95,
               letterSpacing: "-0.03em",
               marginBottom: "36px",
-              textTransform: "uppercase"
+              textTransform: "uppercase",
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
             }}>
               {homeConfig.heroTitle.split("\n").map((line: string, i: number) => {
                 const isEven = i % 2 === 1;
@@ -141,18 +153,18 @@ export default async function HomePage() {
                 );
               })}
             </h1>
-            <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <Link
                 href="/marketplace"
                 className="iw-btn iw-btn-primary"
-                style={{ height: "48px", padding: "0 28px", fontSize: "11px" }}
+                style={{ height: "52px", padding: "0 28px", fontSize: "11px", flex: "1 1 auto", justifyContent: "center", minWidth: "140px" }}
               >
                 Explorer lookbook
               </Link>
               <Link
                 href="/collection/normale"
                 className="iw-btn iw-btn-outline"
-                style={{ height: "48px", padding: "0 28px", fontSize: "11px" }}
+                style={{ height: "52px", padding: "0 28px", fontSize: "11px", flex: "1 1 auto", justifyContent: "center", minWidth: "120px" }}
               >
                 Collections
               </Link>
@@ -178,7 +190,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── SEASON ESSENTIALS ─── */}
-      <section style={{ padding: "120px 24px 80px", maxWidth: "1440px", margin: "0 auto" }}>
+      <section className="section-padding" style={{ maxWidth: "1440px", margin: "0 auto" }}>
         <div style={{
           display: "flex",
           justifyContent: "space-between",
@@ -288,8 +300,7 @@ export default async function HomePage() {
         background: "var(--bg-surface)",
         borderTop: "1px solid rgba(255, 255, 255, 0.05)",
         borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-        padding: "120px 24px"
-      }}>
+      }} className="section-padding">
         <div style={{ maxWidth: "1440px", margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "60px", alignItems: "center" }} className="lg:grid-cols-12">
             
@@ -373,7 +384,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── TWO COLLECTIONS BANNER ─── */}
-      <section style={{ padding: "120px 24px", maxWidth: "1440px", margin: "0 auto" }}>
+      <section className="section-padding" style={{ maxWidth: "1440px", margin: "0 auto" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "24px" }} className="md:grid-cols-2">
           {collections.slice(0, 2).map((col: any) => {
             const isFeminine = col.slug === "feminine";
@@ -420,20 +431,20 @@ export default async function HomePage() {
                 {/* Content */}
                 <div style={{
                   position: "absolute",
-                  bottom: "40px",
-                  left: "40px",
-                  right: "40px",
+                  bottom: "clamp(20px, 5vw, 40px)",
+                  left: "clamp(20px, 5vw, 40px)",
+                  right: "clamp(20px, 5vw, 40px)",
                   zIndex: 1,
                   display: "flex",
                   flexDirection: "column",
-                  gap: "12px"
+                  gap: "8px"
                 }}>
                   <span style={{ fontSize: "10px", letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--text-muted)" }}>
                     Découvrir la
                   </span>
                   <h3 style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: "36px",
+                    fontSize: "clamp(22px, 5vw, 36px)",
                     fontWeight: 900,
                     letterSpacing: "-0.01em",
                     color: "#ffffff"
@@ -449,9 +460,9 @@ export default async function HomePage() {
                     borderBottom: "1px solid #ffffff",
                     width: "fit-content",
                     paddingBottom: "2px",
-                    marginTop: "8px"
+                    marginTop: "4px"
                   }}>
-                    Explorer la collection →
+                    Explorer →
                   </span>
                 </div>
               </Link>
@@ -464,9 +475,8 @@ export default async function HomePage() {
       <section style={{
         background: "var(--bg-surface)",
         borderTop: "1px solid rgba(255, 255, 255, 0.05)",
-        padding: "120px 24px",
         textAlign: "center"
-      }}>
+      }} className="section-padding">
         <div style={{ maxWidth: "600px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "24px" }}>
           <h2 style={{
             fontFamily: "var(--font-display)",
@@ -523,7 +533,7 @@ export default async function HomePage() {
       <footer style={{
         background: "#08090a",
         borderTop: "1px solid rgba(255, 255, 255, 0.05)",
-        padding: "80px 24px 40px"
+        padding: "60px 20px 32px"
       }}>
         <div style={{
           maxWidth: "1440px",
@@ -581,6 +591,8 @@ export default async function HomePage() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          gap: "12px",
+          flexWrap: "wrap",
           fontSize: "10px",
           letterSpacing: "0.1em",
           color: "var(--text-muted)",

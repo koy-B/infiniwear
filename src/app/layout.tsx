@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
+import Providers from "@/components/layout/Providers";
 
 const bodoni = Bodoni_Moda({
   subsets: ["latin"],
@@ -44,6 +45,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+  },
 };
 
 export default function RootLayout({
@@ -54,8 +60,9 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${bodoni.variable} ${hanken.variable}`}>
       <body className="antialiased bg-iw-base text-iw-primary font-body">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+
