@@ -219,7 +219,7 @@ export default async function ProfilPage() {
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                {orders.map((order) => {
+                {orders.map((order: any) => {
                   const st = statusStyle[order.status] || statusStyle.PENDING;
                   return (
                     <div
@@ -264,7 +264,7 @@ export default async function ProfilPage() {
 
                       {/* Items */}
                       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                        {order.items.map((item) => (
+                        {order.items.map((item: any) => (
                           <div key={item.id} style={{ display: "flex", gap: "16px", alignItems: "center" }}>
                             <div style={{
                               width: "48px",
