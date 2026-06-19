@@ -92,7 +92,7 @@ export default async function CollectionsAdminPage() {
             </tr>
           </thead>
           <tbody>
-            {collections.map((col) => (
+            {collections.map((col: any) => (
               <tr key={col.id} style={{ borderBottom: "1px solid var(--border-subtle)", transition: "background 0.2s" }} className="hover:bg-white/[0.02]">
                 {/* Name */}
                 <td style={{ padding: "18px 24px", fontWeight: 600, color: "var(--text-primary)" }}>

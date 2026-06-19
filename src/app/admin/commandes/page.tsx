@@ -193,9 +193,9 @@ export default async function OrdersPage({
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => {
+              {orders.map((order: any) => {
                 const st = statusStyle[order.status];
-                const itemsLabel = order.items.slice(0, 2).map((i) => `${i.product?.name} ×${i.quantity}`).join(", ") + (order.items.length > 2 ? ` +${order.items.length - 2}` : "");
+                const itemsLabel = order.items.slice(0, 2).map((i: any) => `${i.product?.name} ×${i.quantity}`).join(", ") + (order.items.length > 2 ? ` +${order.items.length - 2}` : "");
                 const waMessage = encodeURIComponent(`Bonjour @${order.user?.pseudo}, votre commande #${order.id.slice(-6).toUpperCase()} est bien reçue. Total: ${formatPrice(order.total)}. Merci ! ∞`);
                 const waUrl = `https://wa.me/${waNumber}?text=${waMessage}`;
 
