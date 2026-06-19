@@ -8,7 +8,7 @@ const productSchema = z.object({
   name:         z.string().min(2),
   description:  z.string().optional(),
   price:        z.number().int().positive(),
-  images:       z.array(z.string().url()).min(1),
+  images:       z.array(z.string().min(1)).min(1),
   sizes:        z.array(z.string()).min(1),
   stock:        z.number().int().min(0),
   collectionId: z.string(),
